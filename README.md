@@ -6,3 +6,5 @@ This will contain a few different implementations. By the end, it should contain
 - C implementations for 1D and 2D waves
 - Parallel C implementation for 2D waves
 - (potentially) Python scripts for visualizing Parallel C implementation
+
+test change
