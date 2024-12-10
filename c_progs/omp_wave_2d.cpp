@@ -158,13 +158,17 @@ void compute_wave() {
 
     #pragma omp parallel
     {
+        int my_temp;
         
         for (int i=1;i<num_iterations;i++) {
 
             #pragma omp for
             for (int j=1;j<=n;j++) {
+                my_temp = omp_get_thread_num();
+                cout << "Thread number:" << my_temp << endl;
+
                 for (int k=1;k<=n;k++) {
-                    Wave(j,k,i)=0.5*(c*(Wave(j-1,k,i)+Wave(j+1,k,i)+
+                    Wave_buf(j,k)=0.5*(c*(Wave(j-1,k,i)+Wave(j+1,k,i)+
                             Wave(j,k-1,i)+Wave(j,k+1,i)) + 2*(1-2*c)
                             *Wave(j,k,i)) - Wave(j,k,i-1);
 
@@ -174,12 +178,12 @@ void compute_wave() {
                 }
             }
             
-            //#pragma omp for
-            //for (int j=1;j<=n;j++) {
-            //    for (int k=1;k<=n;k++) { 
-            //        Wave(j,k)=Wave_buf(j,k);
-            //    }
-            //}
+            #pragma omp for
+            for (int j=1;j<=n;j++) {
+                for (int k=1;k<=n;k++) { 
+                    Wave(j,k,i)=Wave_buf(j,k);
+                }
+            }
 
         }
     }
