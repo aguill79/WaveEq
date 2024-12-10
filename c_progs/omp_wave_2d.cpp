@@ -165,7 +165,7 @@ void compute_wave() {
             #pragma omp for
             for (int j=1;j<=n;j++) {
                 my_temp = omp_get_thread_num();
-                cout << "Thread number:" << my_temp << endl;
+                //cout << "Thread number:" << my_temp << endl;
 
                 for (int k=1;k<=n;k++) {
                     Wave_buf(j,k)=0.5*(c*(Wave(j-1,k,i)+Wave(j+1,k,i)+
