@@ -6,19 +6,25 @@ import matplotlib.pyplot as plt
 from matplotlib import cm
 from mpl_toolkits.mplot3d import Axes3D
 
+
+# The main parameters that contribute to execution time
+n       = 100      # Number of grid points
+t_steps = 200  # Number of time steps
+
+
 # Parameters
 L       = 10.0      # length of "string"
 x0      = 5.0       # Starting point of wave
 y0      = 5.0       # Starting point of wave
 k       = 10        # parameter for I(x) eq
-Tf      = 25.0      # Time duration
+Tf      = 10.0      # Time duration
 v       = 1.0       # Wave velocity
-n       = 100      # Number of grid points
-t_steps = 400  # Number of time steps
 
 # Grid for graph of displacement versus time
 x, dx   = np.linspace(0, L, n, retstep = True)
 y, dy   = np.linspace(0, L, n, retstep = True)
+np.savetxt("x_coords_premesh.csv", x, delimiter=',')
+
 x,y = np.meshgrid(x,y)
 t, dt   = np.linspace(0, Tf, t_steps, retstep = True)
 print(dx, dy, dt)
@@ -75,6 +81,18 @@ for tt in range(1, len(t)-1):
         #print(XX, YY, U[XX, YY, tt+1])
 
 
+# Output data to text file
+np.savetxt("u_coords.csv", U[:,:,0], delimiter=',')
+np.savetxt("x_coords.csv", x, delimiter=',')
+np.savetxt("y_coords.csv", y, delimiter=',')
+
+f = open("x_coords.txt", "a")
+f.write("Step size = " + str(dx))
+f.close()
+
+f = open("y_coords.txt", "a")
+f.write("Step size = " + str(dy))
+f.close()
 
 print("Time to plot!!")
 
@@ -82,22 +100,22 @@ print("Time to plot!!")
 
 # plot results
 fig = plt.figure()
-#ax1 = fig.add_subplot(2,1,1, projection='3d')
+ax1 = fig.add_subplot(2,1,1, projection='3d')
 #ax2 = fig.add_subplot(2,2,1, projection='3d')
 #ax3 = fig.add_subplot(2,1,2, projection='3d')
 
 show_time = 20 
 
-#for T in range(0,len(t), 10):
-#
-#    ax1.plot_surface(x,y,U[:,:,T], rstride=3, cstride=3, linewidth=1, antialiased=True, cmap=cm.viridis)
-#
-#ax1.view_init(55,-70)
-#ax1.set_xticks([])
-#ax1.set_yticks([])
-#ax1.set_zticks([])
-#ax1.set_xlabel("x axis")
-#ax1.set_ylabel("y axis")
+for T in range(0,len(t), 10):
+
+    ax1.plot_surface(x,y,U[:,:,T], rstride=3, cstride=3, linewidth=1, antialiased=True, cmap=cm.viridis)
+
+ax1.view_init(55,-70)
+ax1.set_xticks([])
+ax1.set_yticks([])
+ax1.set_zticks([])
+ax1.set_xlabel("x axis")
+ax1.set_ylabel("y axis")
 
 #for T in range(0,50,10):
 #
@@ -124,46 +142,36 @@ show_time = 20
 #ax3.set_ylabel("y axis")
 
 
-ax1_c = fig.add_subplot(2,1,1, projection='3d')
-ax2_c = fig.add_subplot(2,1,2, projection='3d')
-ax3_c = fig.add_subplot(2,2,1, projection='3d')
-#ax4_c = fig.add_subplot(2,1,2, projection='3d')
+#ax1_c = fig.add_subplot(2,1,1, projection='3d')
+#ax2_c = fig.add_subplot(2,1,2, projection='3d')
+#ax3_c = fig.add_subplot(2,2,1, projection='3d')
 
-ax1_c.contourf(x,y,U[:,:,0], zdir='z', offset=0, cmap=cm.viridis)
-
-ax1_c.grid(False)
-ax1_c.set_xticks([])
-ax1_c.set_yticks([])
-ax1_c.set_zticks([])
-ax1_c.set_xlabel("x axis")
-ax1_c.set_ylabel("y axis")
-
-ax2_c.contourf(x,y,U[:,:,50], zdir='z', offset=0, cmap=cm.viridis)
-
-ax2_c.grid(False)
-ax2_c.set_xticks([])
-ax2_c.set_yticks([])
-ax2_c.set_zticks([])
-ax2_c.set_xlabel("x axis")
-ax2_c.set_ylabel("y axis")
-
-
-ax3_c.contourf(x,y,U[:,:,200], zdir='z', offset=0, cmap=cm.viridis)
-
-ax3_c.grid(False)
-ax3_c.set_xticks([])
-ax3_c.set_yticks([])
-ax3_c.set_zticks([])
-ax3_c.set_xlabel("x axis")
-ax3_c.set_ylabel("y axis")
-
-#ax4_c.contourf(x,y,U[:,:,300], zdir='z', offset=0, cmap=cm.viridis)
+#ax1_c.contourf(x,y,U[:,:,0], zdir='z', offset=0, cmap=cm.viridis)
 #
-#ax4_c.grid(False)
-#ax4_c.set_xticks([])
-#ax4_c.set_yticks([])
-#ax4_c.set_zticks([])
-#ax4_c.set_xlabel("x axis")
-#ax4_c.set_ylabel("y axis")
+#ax1_c.grid(False)
+#ax1_c.set_xticks([])
+#ax1_c.set_yticks([])
+#ax1_c.set_zticks([])
+#ax1_c.set_xlabel("x axis")
+#ax1_c.set_ylabel("y axis")
+#
+#ax2_c.contourf(x,y,U[:,:,50], zdir='z', offset=0, cmap=cm.viridis)
+#
+#ax2_c.grid(False)
+#ax2_c.set_xticks([])
+#ax2_c.set_yticks([])
+#ax2_c.set_zticks([])
+#ax2_c.set_xlabel("x axis")
+#ax2_c.set_ylabel("y axis")
+#
+#
+#ax3_c.contourf(x,y,U[:,:,200], zdir='z', offset=0, cmap=cm.viridis)
+#
+#ax3_c.grid(False)
+#ax3_c.set_xticks([])
+#ax3_c.set_yticks([])
+#ax3_c.set_zticks([])
+#ax3_c.set_xlabel("x axis")
+#ax3_c.set_ylabel("y axis")
 
 plt.show()
