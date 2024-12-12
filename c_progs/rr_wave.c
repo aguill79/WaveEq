@@ -77,6 +77,11 @@ int main(int argc, char *argv[]) {
    sscanf(argv[1],"%d",&N);
 
    sscanf(argv[2],"%d",&steps);
+
+   printf("________________________\n");
+   printf("ROUND ROBIN DISTRIBUTION\n");
+   printf("________________________\n");
+
    printf ("N = %d steps = %d \n",N,steps);
 
    if (argc == 4) {
@@ -143,9 +148,15 @@ int main(int argc, char *argv[]) {
 
     // My code for checking how work is distributed amongst threads
     int thread_count = omp_get_max_threads();
+    // This will create even chunks within the checkpoint arrray
     int active_points = ceil((float)steps/thread_count);
+    //int active_points = 1;
+    
+    //int active_points = 9;
     int cp_size = thread_count+active_points*thread_count;
     int checkpoints[cp_size];
+
+    for(int m=0;m<cp_size;m++){ checkpoints[m]=-1;}
 
     printf("thread_count: %d\n", thread_count);
     printf("active_points: %d\n", active_points);
@@ -169,7 +180,7 @@ int main(int argc, char *argv[]) {
 
         }
 
-        #pragma omp for firstprivate(offset) 
+        #pragma omp for schedule(static, 1) firstprivate(offset) 
        for (t=0; t<steps; t++) {
         
         if(check_threads){

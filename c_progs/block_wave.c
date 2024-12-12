@@ -77,6 +77,11 @@ int main(int argc, char *argv[]) {
    sscanf(argv[1],"%d",&N);
 
    sscanf(argv[2],"%d",&steps);
+
+    printf("__________________\n");
+    printf("BLOCK DISTRIBUTION\n");
+    printf("__________________\n");
+
    printf ("N = %d steps = %d \n",N,steps);
 
    if (argc == 4) {
